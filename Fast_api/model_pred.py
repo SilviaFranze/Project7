@@ -17,7 +17,7 @@ def get_entry(x_test):
         for key,val in v.items():
             values_list.append(val)
 
-    return dict(zip(features_list, values_list))
+    return json.dumps(dict(zip(features_list, values_list)))
 
 
 input_dict = get_entry(input_data)
