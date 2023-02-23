@@ -1,7 +1,41 @@
 from pydantic import BaseModel
-# 2. Class which describes Train variables dataset
-class Train(BaseModel):
+import json
+import requests
+import joblib
 
+input_data = joblib.load("../Data&output/input_data.joblib")
+input_data_scaled = joblib.load("../Data&output/input_data_scaled.joblib")
+scaler = joblib.load("../Data&output/standardscaler.joblib")
+light_classif = joblib.load("../Data&output/lightgbmodel.joblib")
+
+
+def get_entry(x_test):
+    features_list=[]
+    values_list=[]
+    for k,v in x_test.sample().to_dict().items():
+        features_list.append(k)
+        for key,val in v.items():
+            values_list.append(val)
+
+    return dict(zip(features_list, values_list))
+
+
+input_dict = get_entry(input_data)
+
+
+def predict_proba(**dict_entry):
+    data_in = dict_entry
+    prediction = light_classif.predict(data_in)
+    probability = light_classif.predict_proba(data_in)
+    return prediction[0], probability
+
+
+
+
+class Train(BaseModel):
+    """
+    Class which describes Train variables dataset
+    """
     CODE_GENDER: int
     FLAG_OWN_CAR: int
     FLAG_OWN_REALTY: int

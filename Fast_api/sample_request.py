@@ -4,7 +4,7 @@ import joblib
 
 input_data = joblib.load("../input_data.joblib")
 
-def get_client(x_test):
+def get_entry(x_test):
     features_list=[]
     values_list=[]
     for k,v in x_test.sample().to_dict().items():
@@ -14,5 +14,5 @@ def get_client(x_test):
 
     return dict(zip(features_list, values_list))
 
-response = requests.post("http://localhost:8000/predict", json=get_client(input_data))
+response = requests.post("http://localhost:8000/predict", json=get_entry(input_data))
 print(response.text)

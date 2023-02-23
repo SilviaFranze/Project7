@@ -2,3 +2,4 @@ Other_data
 Data&output
 base_libs.txt
 spec-file.txt
+**/__pycache__/
