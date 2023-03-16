@@ -3,3 +3,4 @@ Data&output
 base_libs.txt
 spec-file.txt
 **/__pycache__/
+**/.idea/

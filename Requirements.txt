@@ -1,0 +1,13 @@
+numpy
+pandas
+lightgbm
+sklearn
+matplotlib
+seaborn
+missingno
+imblearn
+shap
+uvicorn
+fastapi
+pydantic
+streamlit
