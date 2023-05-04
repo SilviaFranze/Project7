@@ -3,39 +3,37 @@ import requests
 import shap
 import pandas as pd
 import joblib
-from main import prediction_client
 
-st.title("Scoring prediction")
-
-# URL dell'API
-API_URL = "http://127.0.0.1:8000/prediction"
-
-
-# loading light gbm model and shap explainer and client ids
+# loading light gbm model, shap explainer, client ids, and data for SHAP
+input_data_scaled = joblib.load("../Data&output/X_tst_sld_skid.joblib")   # customer data
 lgbm_classif = joblib.load("../Data&output/lightgbmodel.joblib")
 explainer = joblib.load("../Data&output/shap_explainer.joblib")
-client_ids = joblib.load("../Data&output/list_id_clients")
 client_data_for_shap = joblib.load("../Data&output/test_data.joblib")
+client_ids = joblib.load("../Data&output/list_id_clients.joblib")
 
-# streamlit run .\dashb_app.py
+st.title("Scoring prediction")
+st.write('Select the customer\'s ID to make a prediction on their loan request.')
 
-# Creazione dell'interfaccia utente con Streamlit
-def app():
-    # Scoring client
-    st.title("Credit Scoring Dashboard")
-    
-    # Client id selection
-    st.subheader("Client selection:")
-    selected_client_id = st.selectbox("Select client ID", client_ids)
-    
-    # Credit prediction
-    st.subheader("Credit Prediction:")
-    prediction = prediction_client(selected_client_id)
-    st.write(f"La previsione per il cliente {selected_client_id} è {prediction}.")
-    
-    # Feature importance SHAP
-    st.subheader("Feature Importance graphics:")
-    client_data = pd.read_csv(f"client_data/{selected_client_id}.csv")
-    shap_values = explainer(client_data)
-    shap.summary_plot(shap_values, client_data)
-    st.pyplot(bbox_inches="tight")
+
+# URL FastAPI
+api_url = "http://127.0.0.1:8000/prediction"
+
+# Client id selection through a list
+st.subheader("Client selection:")
+selected_client_id = str(st.selectbox("Select client ID", client_ids))
+
+# Crea un pulsante per fare la richiesta GET all'API
+if st.button('Predict'):
+    # Effettua la richiesta GET passando l'id del cliente come parametro
+    response = requests.get(api_url + "/" + selected_client_id)
+
+    # Estrapola la decisione dalla risposta dell'API
+    decision = response.json()['Decision']
+
+    # Mostra la decisione all'utente
+    st.write('The prediction for the client num', selected_client_id, 'is', decision)
+
+
+
+
+    # streamlit run .\dashb_app.py

@@ -18,7 +18,7 @@ lgbm_classif = joblib.load("../Data&output/lightgbmodel.joblib")
 @app.get('/prediction/{id_client}')
 
 
-def prediction_client(id_client: int):   
+def prediction(id_client: int):   
     '''
     Endpoint to get the client id and return the prediction based on a pre trained LightGBM model
     '''    
