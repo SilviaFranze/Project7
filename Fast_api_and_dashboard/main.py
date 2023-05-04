@@ -23,10 +23,10 @@ def prediction(id_client: int):
     Endpoint to get the client id and return the prediction based on a pre trained LightGBM model
     '''    
 
-    # Select customer data specified by ID and dropping the ID column
+    # Select customer data specified by ID and drops the ID column
     selected_customer = input_data_scaled[input_data_scaled['SK_ID_CURR'] == id_client].drop('SK_ID_CURR', axis=1)
 
-    # makes the prediction on the index given as input
+    # makes the prediction about a specific client
     predizione = lgbm_classif.predict_proba(selected_customer)[:,0][0]
     
     # determines whether the application was accepted or rejected on the basis of the 0.90 threshold

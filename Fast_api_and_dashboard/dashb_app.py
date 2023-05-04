@@ -22,16 +22,16 @@ api_url = "http://127.0.0.1:8000/prediction"
 st.subheader("Client selection:")
 selected_client_id = str(st.selectbox("Select client ID", client_ids))
 
-# Crea un pulsante per fare la richiesta GET all'API
+# button to make the choice from the list of client ids to make the  GET request to the API
 if st.button('Predict'):
     # Effettua la richiesta GET passando l'id del cliente come parametro
     response = requests.get(api_url + "/" + selected_client_id)
 
-    # Estrapola la decisione dalla risposta dell'API
+    # Retrieves the decision from the API respnse 
     decision = response.json()['Decision']
 
-    # Mostra la decisione all'utente
-    st.write('The prediction for the client num', selected_client_id, 'is', decision)
+    # writes the final decision
+    st.write('The decision for the client num', selected_client_id, 'is', decision)
 
 
 
