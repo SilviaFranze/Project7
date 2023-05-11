@@ -34,6 +34,8 @@ if st.button('Predict'):
     st.write('The decision for the client num', selected_client_id, 'is', decision)
 
 
+st.title("Global importance of features")
+
 
 
     # streamlit run .\dashb_app.py
