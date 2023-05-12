@@ -6,12 +6,14 @@ from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from lightgbm import LGBMClassifier
 
+pythonanywhere_site = "http://silviafranze.pythonanywhere.com"
+
 app = FastAPI()
 
 #Load customer data
-input_data_scaled = joblib.load("../Data&output/X_tst_sld_skid.joblib")
+input_data_scaled = joblib.load("/home/silviafranze/X_tst_sld_skid.joblib")
 # Load the LightGBM model
-lgbm_classif = joblib.load("../Data&output/lightgbmodel.joblib")
+lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
 
 
 
