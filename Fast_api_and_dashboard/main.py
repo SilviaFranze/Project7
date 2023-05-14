@@ -8,9 +8,9 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 #Load customer data
-input_data_scaled = joblib.load("../Data&output/X_tst_sld_skid.joblib")     # /home/silviafranze  for pythonanywhere
+input_data_scaled = joblib.load("/home/silviafranze/X_tst_sld_skid.joblib")     # /home/silviafranze  for pythonanywhere
 # Load the LightGBM model
-lgbm_classif = joblib.load("../Data&output/lightgbmodel.joblib")
+lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")       # ../Data&output for local testing
 
 
 

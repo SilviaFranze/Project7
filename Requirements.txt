@@ -1,11 +1,11 @@
-numpy
+joblib
 pandas
+requests
+streamlit
 lightgbm
 sklearn
 matplotlib
 seaborn
-missingno
-imblearn
 shap
 flask
 pydantic
