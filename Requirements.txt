@@ -7,7 +7,6 @@ seaborn
 missingno
 imblearn
 shap
-uvicorn
-fastapi
+flask
 pydantic
 streamlit
