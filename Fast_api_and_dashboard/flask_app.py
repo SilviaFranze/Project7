@@ -1,44 +1,49 @@
 
 # A very simple Flask Hello World app for you to get started with...
-
-from flask import Flask, request, jsonify
+from flask import Flask
 import joblib
-import pandas as pd
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 app = Flask(__name__)
 
-#Load customer data
-input_data_scaled = joblib.load("/home/silviafranze/X_tst_sld_skid.joblib")     
-# Load the LightGBM model
-lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
-
-@app.route('/prediction/<int:id_client>', methods=['GET'])
+# Autentication Google Drive
+gauth = GoogleAuth()
+gauth.LocalWebserverAuth()  # Autentication through local browser
+drive = GoogleDrive(gauth)
 
 
 
-def prediction(id_client):   
-    '''
-    Endpoint to get the client id and return the prediction based on a pre trained LightGBM model
-    '''    
+##Load customer data
+#input_data_scaled = joblib.load("/home/silviafranze/X_tst_sld_skid.joblib")
+## Load the LightGBM model
+#lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
 
-    # Select customer data specified by ID and drops the ID column
-    selected_customer = input_data_scaled[input_data_scaled['SK_ID_CURR'] == id_client].drop('SK_ID_CURR', axis=1)
 
-    # makes the prediction about a specific client
-    prediction = lgbm_classif.predict_proba(selected_customer)[:,0][0]
-    
-    # determines whether the application was accepted or rejected on the basis of the 0.90 threshold
-    if prediction > 0.90:
-        decision = "accepted"
-    else:
-        decision = "refused"
 
-    # returns a dictionary with the client ID and the decision made
-    response = {"Customer id": id_client, 
-                "Decision": decision}
-    
-    return jsonify(response)
 
+#  files ID Google Drive
+input_data_scld_id = "1evpnU161MKAKQ1xUrDP4OOi2G0uAhpTu"
+lgbm_classif_id = "1VtW9HyNbUID8thQJQvmo7z4-b-3L3QfB"
+
+# Download  files from Google Drive
+input_data_scld = drive.CreateFile({'id': input_data_scld_id})
+input_data_scld.GetContentFile('X_tst_sld_skid.joblib')
+
+lgbm_model = drive.CreateFile({'id': lgbm_classif_id})
+lgbm_model.GetContentFile('lightgbmodel.joblib')
+
+
+
+# model and data load
+input_data_scaled = joblib.load("input_data.joblib")
+lgbm_classif = joblib.load("model.joblib")
+
+
+
+@app.route('/ciao')
+def hello_pythonanywhere():
+    return 'Hello from PythonAnywhere!'
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run()
