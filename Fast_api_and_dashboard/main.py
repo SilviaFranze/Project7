@@ -1,6 +1,5 @@
 # 1. Library imports
 import joblib
-import pandas as pd
 from flask import Flask, request, jsonify
 
 # pythonanywhere_site = "http://silviafranze.pythonanywhere.com"
@@ -8,11 +7,9 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 #Load customer data
-input_data_scaled = joblib.load("/home/silviafranze/X_tst_sld_skid.joblib")     # /home/silviafranze  for pythonanywhere
+input_data_scaled = joblib.load("../Data&output/X_tst_sld_skid.joblib")     # /home/silviafranze  for pythonanywhere
 # Load the LightGBM model
-lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")       # ../Data&output for local testing
-
-
+lgbm_classif = joblib.load("../Data&output/lightgbmodel.joblib")       # ../Data&output for local testing
 
 @app.route('/prediction/<int:id_client>', methods=['GET'])
 
@@ -42,4 +39,6 @@ def prediction(id_client):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run()
+
+#  da rimettere dentro app.run()    -->  host="0.0.0.0"
