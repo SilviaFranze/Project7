@@ -16,7 +16,7 @@ st.write('Select the customer\'s ID to make a prediction on their loan request.'
 
 
 # URL FastAPI
-api_url = "http://127.0.0.1:5000/prediction"
+api_url = "https://silviafranze.pythonanywhere.com/prediction"
 
 # Client id selection through a list
 st.subheader("Client selection:")
