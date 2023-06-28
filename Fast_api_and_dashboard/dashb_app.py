@@ -5,18 +5,18 @@ import pandas as pd
 import joblib
 
 # loading light gbm model, shap explainer, client ids, and data for SHAP
-input_data_scaled = joblib.load("/home/silviafranze/X_tst_sld_skid.joblib")   # customer data
-lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
-explainer = joblib.load("/home/silviafranze/shap_explainer.joblib")
-client_data_for_shap = joblib.load("/home/silviafranze/test_data.joblib")
-client_ids = joblib.load("/home/silviafranze/list_id_clients.joblib")
+input_data_scaled = joblib.load("../Data&output/X_tst_sld_skid.joblib")   # customer data
+lgbm_classif = joblib.load("../Data&output/lightgbmodel.joblib")     # ../Data&output   pour le run en local
+explainer = joblib.load("../Data&output/shap_explainer.joblib")
+client_data_for_shap = joblib.load("../Data&output/test_data.joblib")     # /home/silviafranze pour le run sur python anywhere, voir avec azure webapp et changer ensuite
+client_ids = joblib.load("../Data&output/list_id_clients.joblib")
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
 
 
 # URL FastAPI
-api_url = "http://127.0.0.1:8000/prediction"
+api_url = "http://127.0.0.1:5000/prediction"
 
 # Client id selection through a list
 st.subheader("Client selection:")
