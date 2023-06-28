@@ -14,8 +14,6 @@ client_ids = joblib.load("../Data&output/list_id_clients.joblib")
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
 
-
-# URL FastAPI
 api_url = "https://silviafranze.pythonanywhere.com/prediction"
 
 # Client id selection through a list
