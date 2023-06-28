@@ -1,12 +1,5 @@
-flask
+flask                                            
 joblib
 pandas
 requests
-streamlit
-lightgbm
-sklearn
-matplotlib
-seaborn
-shap
-pydantic
-PyDrive
+pydrive
