@@ -4,6 +4,7 @@
 from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
+import git 
 
 #Load customer data
 input_data_scaled = joblib.load("/home/silviafranze/X_tst_light.joblib")   #   X_tst_sld_skid.joblib was the original one
@@ -16,6 +17,17 @@ app.config["DEBUG"] = True
 @app.route('/')
 def home():
     return 'Welcome to the Homepage'
+
+
+@app.route('/update_fromgithub', methods=['POST'])
+    def webhook():
+        if request.method == 'POST':
+            repo = git.Repo('home/silviafranze/Project7')
+            origin = repo.remotes.origin
+origin.pull()
+return 'Updated PythonAnywhere successfully', 200
+        else:
+            return 'Wrong event type', 400
 
 @app.route('/prediction/<int:id_client>', methods =['GET'])
 def prediction(id_client):
