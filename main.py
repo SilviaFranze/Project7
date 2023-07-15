@@ -3,11 +3,15 @@
 
 from flask import Flask, request, jsonify
 import joblib
-import pandas as pd
-import git 
+import git
+import os
+
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "1"
 
 #Load customer data
-input_data_scaled = joblib.load("/home/silviafranze/X_tst_light.joblib")   #   X_tst_sld_skid.joblib was the original one
+input_data_scaled = joblib.load("/home/silviafranze/input_data_scaled.joblib")   #   X_tst_sld_skid.joblib was the original one
 # Load the LightGBM model
 lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
 
@@ -20,14 +24,17 @@ def home():
 
 
 @app.route('/update_fromgithub', methods=['POST'])
-    def webhook():
-        if request.method == 'POST':
-            repo = git.Repo('home/silviafranze/Project7')
-            origin = repo.remotes.origin
-origin.pull()
-return 'Updated PythonAnywhere successfully', 200
-        else:
-            return 'Wrong event type', 400
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo("/home/silviafranze/Project7")
+        # repo.git.checkout('frompythonanywhere') # Checkout to branch "frompythonanywhere"
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
+
+
 
 @app.route('/prediction/<int:id_client>', methods =['GET'])
 def prediction(id_client):
