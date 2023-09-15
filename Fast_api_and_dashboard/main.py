@@ -39,6 +39,6 @@ def prediction(id_client):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
 
 #  da rimettere dentro app.run()    -->  host="0.0.0.0"
