@@ -1,6 +1,3 @@
-
-# A very simple Flask Hello World app for you to get started with...
-
 from flask import Flask, request, jsonify, abort
 import joblib
 import git
@@ -144,3 +141,4 @@ def prediction(id_client):
 
 
     # return f'This will be the prediction score app!{id_client}'
+   # testing webhook
