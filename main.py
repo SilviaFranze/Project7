@@ -141,4 +141,4 @@ def prediction(id_client):
 
 
     # return f'This will be the prediction score app!{id_client}'
-   # testing webhook
+   # testing webhook2
