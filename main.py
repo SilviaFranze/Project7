@@ -83,11 +83,10 @@ def webhook():
                 payload=payload))
             abort(abort_code)
 
-        if payload['ref'] != 'refs/heads/frompythonanywhere':
-            return json.dumps({'msg': 'Not frompythonanywhere branch; ignoring'})
+        if payload['ref'] != 'refs/heads/master':
+            return json.dumps({'msg': 'Not master; ignoring'})
 
-        repo = git.Repo("/home/silviafranze/Project7")
-        repo.git.checkout('frompythonanywhere') # Checkout to branch "frompythonanywhere"
+        repo = git.Repo('/var/www/sites/mysite')
         origin = repo.remotes.origin
 
         pull_info = origin.pull()
@@ -141,3 +140,5 @@ def prediction(id_client):
     return jsonify(response)
 
     # return f'This will be the prediction score app!{id_client}'
+
+#    testing webhook
