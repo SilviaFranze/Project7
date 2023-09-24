@@ -194,3 +194,5 @@ def prediction(id_client):
     return jsonify(response)
 
     # return f'This will be the prediction score app!{id_client}'
+
+ # testing webhook
