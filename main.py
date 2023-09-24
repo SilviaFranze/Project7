@@ -136,6 +136,7 @@ def webhook():
                 payload=payload))
             abort(abort_code)
 
+        print(payload['ref']+'CIAO AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         if payload['ref'] != 'refs/heads/master':
             return json.dumps({'msg': 'Not master; ignoring'})
 
