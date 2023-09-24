@@ -5,6 +5,7 @@ import os
 import hmac
 import hashlib
 import json
+import logging
 
 secret_token = os.getenv("SECRET_TOKEN")
 
@@ -20,14 +21,51 @@ lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
+logging.basicConfig(level=logging.DEBUG)
+
 def is_valid_signature(x_hub_signature, data, private_key):
-    # x_hub_signature and data are from the webhook payload
-    # private key is your webhook secret
-    hash_algorithm, github_signature = x_hub_signature.split('=', 1)
+    """
+    Validate the X-Hub-Signature header value against the request payload.
+
+    Args:
+    - x_hub_signature (str): The value of X-Hub-Signature header, e.g., "sha1=abcd1234".
+    - data (bytes): The raw request payload.
+    - private_key (str): The webhook secret token.
+
+    Returns:
+    - bool: True if the signature is valid; False otherwise.
+    """
+    # Ensure data is in bytes format
+    if not isinstance(data, bytes):
+        logging.error("Data is not in bytes format.")
+        return False
+
+    # Split the header value into hash algorithm and signature
+    try:
+        hash_algorithm, github_signature = x_hub_signature.split('=', 1)
+    except ValueError:
+        logging.error("X-Hub-Signature header value is not in the expected format.")
+        return False
+
+    # Get the appropriate hash function from hashlib
     algorithm = hashlib.__dict__.get(hash_algorithm)
+    if not algorithm:
+        logging.error(f"Hash algorithm {hash_algorithm} is not supported.")
+        return False
+
+    # Encode the private key into bytes
     encoded_key = bytes(private_key, 'latin-1')
+
+    # Compute the HMAC
     mac = hmac.new(encoded_key, msg=data, digestmod=algorithm)
-    return hmac.compare_digest(mac.hexdigest(), github_signature)
+    computed_signature = mac.hexdigest()
+
+    # Log the computed signature for debugging purposes (optional)
+    logging.debug(f"Computed HMAC signature: {computed_signature}")
+
+    # Compare the computed signature with the one provided by GitHub
+    return hmac.compare_digest(computed_signature, github_signature)
+
 
 @app.route('/')
 def home():
@@ -69,13 +107,28 @@ def webhook():
         if event != "push":
             return json.dumps({'msg': "Wrong event type"})
 
+        # Get both signatures from the headers
         x_hub_signature = request.headers.get('X-Hub-Signature')
-        # webhook content type should be application/json for request.data to have the payload
-        # request.data is empty in case of x-www-form-urlencoded
+        x_hub_signature_256 = request.headers.get('X-Hub-Signature-256')
+
+        # Define the abort code
         abort_code = 418
-        if not is_valid_signature(x_hub_signature, request.data, secret_token):
-            print('Deploy signature failed: {sig}'.format(sig=x_hub_signature))
+
+        # Check the sha1 signature
+        if x_hub_signature and not is_valid_signature(x_hub_signature, request.data, secret_token):
+            print('Deploy sha1 signature failed: {sig}'.format(sig=x_hub_signature))
             abort(abort_code)
+
+        # Check the sha256 signature
+        if x_hub_signature_256 and not is_valid_signature(x_hub_signature_256, request.data, secret_token):
+            print('Deploy sha256 signature failed: {sig}'.format(sig=x_hub_signature_256))
+            abort(abort_code)
+
+        # If neither signature is provided, abort
+        if not x_hub_signature and not x_hub_signature_256:
+            print('Missing X-Hub-Signature and X-Hub-Signature-256 headers')
+            abort(abort_code)
+
 
         payload = request.get_json()
         if payload is None:
@@ -83,11 +136,10 @@ def webhook():
                 payload=payload))
             abort(abort_code)
 
-        if payload['ref'] != 'refs/heads/frompythonanywhere':
-            return json.dumps({'msg': 'Not frompythonanywhere branch; ignoring'})
+        if payload['ref'] != 'refs/heads/master':
+            return json.dumps({'msg': 'Not master; ignoring'})
 
         repo = git.Repo("/home/silviafranze/Project7")
-        repo.git.checkout('frompythonanywhere') # Checkout to branch "frompythonanywhere"
         origin = repo.remotes.origin
 
         pull_info = origin.pull()
