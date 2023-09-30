@@ -166,8 +166,18 @@ def webhook():
         return 'Wrong event type', 400
     '''
 
+@app.errorhandler(Exception)
+def handle_generic_exception(e):
+    # Log the exception for debugging purposes
+    app.logger.error(f"An error occurred: {str(e)}")
+    
+    # Return a generic error message to the client
+    return jsonify(error="An internal error occurred. Please try again later."), 500
+
 @app.route('/prediction/<int:id_client>', methods =['GET'])
 def prediction(id_client):
+
+    # If any exception occurs here, it will be caught by the generic handler
 
     '''
     Endpoint to get the client id and return the prediction based on a pre trained LightGBM model
