@@ -5,3 +5,4 @@ spec-file.txt
 **/__pycache__/
 **/.idea/
 .env
+environment.yml
