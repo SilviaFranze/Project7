@@ -3,4 +3,4 @@ joblib
 pandas
 requests
 pydrive
-shap
+streamlit-shap
