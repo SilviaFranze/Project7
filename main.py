@@ -14,7 +14,7 @@ os.environ["NUMEXPR_NUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
 
 #Load customer data
-input_data_scaled = joblib.load("/home/silviafranze/input_data_scaled.joblib")   #   X_tst_sld_skid.joblib was the original one
+input_data_scaled = joblib.load("/home/silviafranze/input_data_scaled_ok.joblib")   
 # Load the LightGBM model
 lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
 
@@ -170,7 +170,7 @@ def webhook():
 def handle_generic_exception(e):
     # Log the exception for debugging purposes
     app.logger.error(f"An error occurred: {str(e)}")
-    
+
     # Return a generic error message to the client
     return jsonify(error="An internal error occurred. Please try again later."), 500
 
@@ -184,8 +184,7 @@ def prediction(id_client):
     '''
 
     # Select customer data specified by ID
-    # selected_customer = input_data_scaled.loc[id_client].to_numpy().reshape(1,-1)
-    selected_customer = input_data_scaled.loc[id_client].values.reshape(1,-1)
+    selected_customer = [input_data_scaled.loc[id_client]]
 
 
     # makes the prediction about a specific client

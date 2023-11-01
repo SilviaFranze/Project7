@@ -11,7 +11,7 @@ def test_valid_client_id():
     assert response.status_code == 200
 
 def test_invalid_client_id_format():
-    client_id = 6549871  # Example invalid client ID format
+    client_id = 207122  # Example invalid client ID format
     response = requests.get(f"{BASE_URL}/prediction/{client_id}")
     
     # Check if the response status code is 500, the one I set
