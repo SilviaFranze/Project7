@@ -10,15 +10,17 @@ import io
 import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
+git lfs logs last
 
 #input_data = joblib.load("project7/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
 #client_ids =  joblib.load("/mount/src/project7/Streamlit/list_id_clients_long.joblib")
 # URL del file raw su GitHub
 #url = "https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib"
 
-input_data = joblib.load("Streamlit/data4streamlit.joblib")
 client_ids =  joblib.load("Streamlit/list_id_clients_long.joblib")
 explainer = joblib.load("Streamlit/shap_explainer.joblib")
+input_data = joblib.load("Streamlit/data4streamlit.joblib")
+
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
