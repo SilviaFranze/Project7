@@ -10,12 +10,13 @@ import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
 
-url_data = ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-url_ids =  ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
+input_data = joblib.load("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
+client_ids =  joblib.load("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
 
+"""
 # Token di Accesso Personale (recuperato dai Secrets di Streamlit)
 pat = st.secrets["DB_USERNAME"]
-pat = st.secrets["DB_TOKEN"]
+pat2 = st.secrets["DB_TOKEN"]
 
 # Imposta l'autenticazione per la richiesta
 headers = {'Authorization': f'token {pat}'}
@@ -34,6 +35,8 @@ file_like_object_ids = io.BytesIO(response_ids.content)
 # Carica i dati joblib dagli oggetti file-like
 input_data = joblib.load(file_like_object_data)
 client_ids = joblib.load(file_like_object_ids)
+
+"""
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
