@@ -6,3 +6,4 @@ spec-file.txt
 **/.idea/
 .env
 environment.yml
+*data4streamlit.joblib
