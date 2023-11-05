@@ -14,7 +14,7 @@ url_data = ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4
 url_ids =  ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
 
 # Token di Accesso Personale (recuperato dai Secrets di Streamlit)
-pat = st.secrets[github_token]
+pat = st.secrets["github_token"]
 
 # Imposta l'autenticazione per la richiesta
 headers = {'Authorization': f'token {pat}'}
