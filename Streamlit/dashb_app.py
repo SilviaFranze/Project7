@@ -4,13 +4,27 @@ import streamlit as st
 from streamlit_shap import st_shap
 import shap
 import joblib
+import io
 
 import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
 
-input_data = joblib.load("https://github.com/SilviaFranze/Project7/blob/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-client_ids = joblib.load("https://github.com/SilviaFranze/Project7/blob/master/Streamlit/list_id_clients_long.joblib")
+url_data = joblib.load("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
+url_ids = joblib.load("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
+
+
+# Ottieni i dati raw da GitHub
+response_data = requests.get(url_data)
+response_data.raise_for_status()  # Verifica che la richiesta sia andata a buon fine
+
+response_ids = requests.get(url_ids)
+response_ids.raise_for_status()  # Verifica che la richiesta sia andata a buon fine
+
+# Carica i dati da una stringa di byte
+input_data = joblib.load(io.BytesIO(response_data.content))
+client_ids = joblib.load(io.BytesIO(response_ids.content))
+
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
