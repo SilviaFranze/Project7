@@ -21,14 +21,6 @@ headers = {'Authorization': f'token {pat}'}
 # Scarica i dati raw dai file su GitHub
 response_data = requests.get(url_data) #, headers=headers
 
-
-##################################################################################################################################
-print(response_data.status_code)  # Stampa il codice di stato
-print(response_data.text)  # Stampa il corpo della risposta
-response_data.raise_for_status()  # Verifica che la richiesta sia andata a buon fine
-##################################################################################################################################
-
-
 response_data.raise_for_status()  # Verifica che la richiesta sia andata a buon fine
 
 response_ids = requests.get(url_ids, headers=headers)
