@@ -11,8 +11,23 @@ import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
 
-input_data = joblib.load("project7/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-client_ids =  joblib.load("/mount/src/project7/Streamlit/list_id_clients_long.joblib")
+#input_data = joblib.load("project7/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
+#client_ids =  joblib.load("/mount/src/project7/Streamlit/list_id_clients_long.joblib")
+# URL del file raw su GitHub
+url = "https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib"
+
+# Effettua una richiesta GET per scaricare il file
+response = requests.get(url)
+
+# Verifica che la richiesta sia andata a buon fine
+response.raise_for_status()
+
+# Crea un oggetto file-like dai dati raw
+file_like_object = io.BytesIO(response.content)
+
+# Carica i dati joblib dall'oggetto file-like
+input_data = joblib.load(file_like_object)
+
 
 """
 # Token di Accesso Personale (recuperato dai Secrets di Streamlit)
