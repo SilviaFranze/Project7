@@ -6,12 +6,8 @@ import shap
 import pandas as pd
 import joblib
 
-# loading light gbm model, shap explainer, client ids, and data for SHAP
-input_data_scaled = joblib.load("Data&output/X_tst_sld_skid_long.joblib")   # customer data
-lgbm_classif = joblib.load("Data&output/lightgbmodel.joblib")     # ../Data&output   pour le run en local
-explainer = joblib.load("Data&output/shap_explainer.joblib")
-client_data_for_shap = joblib.load("Data&output/test_data.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-client_ids = joblib.load("Data&output/list_id_clients_long.joblib")
+input_data = joblib.load("data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
+client_ids = joblib.load("list_id_clients_long.joblib")
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
