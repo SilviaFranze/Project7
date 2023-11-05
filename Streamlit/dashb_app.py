@@ -13,18 +13,26 @@ st.write("Files in current directory:", os.listdir('.'))
 url_data = ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
 url_ids =  ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
 
+# Token di Accesso Personale (recuperato dai Secrets di Streamlit)
+pat = st.secrets["GITHUB_TOKEN"]
 
-# Ottieni i dati raw da GitHub
-response_data = requests.get(url_data)
+# Imposta l'autenticazione per la richiesta
+headers = {'Authorization': f'token {pat}'}
+
+# Scarica i dati raw dai file su GitHub
+response_data = requests.get(url_data, headers=headers)
 response_data.raise_for_status()  # Verifica che la richiesta sia andata a buon fine
 
-response_ids = requests.get(url_ids)
+response_ids = requests.get(url_ids, headers=headers)
 response_ids.raise_for_status()  # Verifica che la richiesta sia andata a buon fine
 
-# Carica i dati da una stringa di byte
-input_data = joblib.load(io.BytesIO(response_data.content))
-client_ids = joblib.load(io.BytesIO(response_ids.content))
+# Crea oggetti file-like dai dati raw
+file_like_object_data = io.BytesIO(response_data.content)
+file_like_object_ids = io.BytesIO(response_ids.content)
 
+# Carica i dati joblib dagli oggetti file-like
+input_data = joblib.load(file_like_object_data)
+client_ids = joblib.load(file_like_object_ids)
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
