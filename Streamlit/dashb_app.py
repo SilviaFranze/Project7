@@ -10,8 +10,8 @@ import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
 
-url_data = joblib.load("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-url_ids = joblib.load("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
+url_data = ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
+url_ids =  ("https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib")
 
 
 # Ottieni i dati raw da GitHub
