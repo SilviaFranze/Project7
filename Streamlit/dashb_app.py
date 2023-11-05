@@ -6,8 +6,8 @@ import shap
 import pandas as pd
 import joblib
 
-input_data = joblib.load("data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-client_ids = joblib.load("list_id_clients_long.joblib")
+input_data = joblib.load("Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
+client_ids = joblib.load("Streamlit/list_id_clients_long.joblib")
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
@@ -36,4 +36,4 @@ st.title("Global importance of features")
 
 
 
-    # streamlit run .\dashb_app.py
+    # streamlit run .\Streamlit\dashb_app.py
