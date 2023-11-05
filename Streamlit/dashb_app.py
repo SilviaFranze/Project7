@@ -5,6 +5,10 @@ from streamlit_shap import st_shap
 import shap
 import joblib
 
+import os
+st.write("Current directory:", os.getcwd())
+st.write("Files in current directory:", os.listdir('.'))
+
 input_data = joblib.load("data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
 client_ids = joblib.load("list_id_clients_long.joblib")
 
