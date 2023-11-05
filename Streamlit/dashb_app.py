@@ -16,9 +16,9 @@ st.write("Files in current directory:", os.listdir('.'))
 # URL del file raw su GitHub
 #url = "https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib"
 
-inputdata = joblib.load('Streamlit/data4streamlit.joblib')
-
-explainer = shap.TreeExplainer(light_for_shap, model_output='raw')
+input_data = joblib.load('Streamlit/data4streamlit.joblib')
+client_ids =  joblib.load("Streamlit/list_id_clients_long.joblib")
+explainer = joblib.load("Streamlit/shap_explainer.joblib")
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
