@@ -10,7 +10,6 @@ import io
 import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
-git lfs logs last
 
 #input_data = joblib.load("project7/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
 #client_ids =  joblib.load("/mount/src/project7/Streamlit/list_id_clients_long.joblib")
