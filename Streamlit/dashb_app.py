@@ -3,7 +3,6 @@ import requests
 import streamlit as st
 from streamlit_shap import st_shap
 import shap
-import pandas as pd
 import joblib
 
 input_data = joblib.load("Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
