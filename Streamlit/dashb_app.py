@@ -19,7 +19,7 @@ pat = st.secrets["github_token"]
 headers = {'Authorization': f'token {pat}'}
 
 # Scarica i dati raw dai file su GitHub
-response_data = requests.get(url_data, headers=headers)
+response_data = requests.get(url_data) #, headers=headers
 
 
 ##################################################################################################################################
