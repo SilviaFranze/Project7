@@ -12,8 +12,8 @@ import shap
 from streamlit_shap import st_shap
 
 
-input_data = joblib.load("Streamlit/input_data_str_light.joblib")
-lightgbmodel =  joblib.load("Streamlit/lightgbmodelsh.joblib")
+input_data = joblib.load("Streamlit_module/input_data_str_light.joblib")
+lightgbmodel =  joblib.load("Streamlit_module/lightgbmodelsh.joblib")
 client_ids = input_data.SK_ID_CURR.tolist()
 
 # add the line to generate the explainer
