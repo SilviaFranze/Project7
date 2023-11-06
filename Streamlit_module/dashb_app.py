@@ -6,7 +6,7 @@ st.write("Files in current directory:", os.listdir('.'))
 import requests
 import pandas as pd
 import joblib
-from Streamlit_module import shap_functions as shap_f
+import Streamlit_module.shap_functions as shap_f
 import lightgbm
 import shap
 from streamlit_shap import st_shap
