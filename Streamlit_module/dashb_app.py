@@ -1,8 +1,8 @@
 import os
+import streamlit as st
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
 
-import streamlit as st
 import requests
 import pandas as pd
 import joblib
