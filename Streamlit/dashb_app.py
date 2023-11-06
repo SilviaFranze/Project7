@@ -1,24 +1,16 @@
 import streamlit as st
 import requests
-import streamlit as st
-from streamlit_shap import st_shap
 import pandas as pd
-import shap
 import joblib
-import io
+import shap_functions as shap_f
 import lightgbm
-import os
-st.write("CIAoooooooooooo, Current directory:", os.getcwd())
-st.write("Files in current directory:", os.listdir('.'))
+import shap
+from streamlit_shap import st_shap
 
-#input_data = joblib.load("project7/Streamlit/data4streamlit.joblib")     # /home/silviafranze pour le run sur python anywhere  # substitute them with the actual functioning dataset, to calculate the explainer etc
-#client_ids =  joblib.load("/mount/src/project7/Streamlit/list_id_clients_long.joblib")
-# URL del file raw su GitHub
-#url = "https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib"
 
 input_data = joblib.load("Streamlit/input_data_str_light.joblib")
-model =  joblib.load("Streamlit/lightgbmodelsh.joblib")
-# explainer = joblib.load("Streamlit/shap_explainer.joblib")
+lightgbmodel =  joblib.load("Streamlit/lightgbmodelsh.joblib")
+client_ids = input_data.SK_ID_CURR.tolist()
 
 # add the line to generate the explainer
 # add the line that insulates the client ids to make the liste deroulante
@@ -32,7 +24,7 @@ api_url = "https://silviafranze.pythonanywhere.com/prediction"
 
 # Client id selection through a list
 st.subheader("Client selection:")
-####   selected_client_id = str(st.selectbox("Select client ID", client_ids))
+selected_client_id = str(st.selectbox("Select client ID", client_ids))
 
 # button to make the choice from the list of client ids to make the  GET request to the API
 if st.button('Predict'):
@@ -47,6 +39,11 @@ if st.button('Predict'):
 
 
 st.title("Global importance of features")
+
+shap.initjs()  # JavaScript plots
+
+
+explainer = shap.TreeExplainer(lightgbmodel, model_output='raw')
 
 
 
