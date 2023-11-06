@@ -16,9 +16,9 @@ st.write("Files in current directory:", os.listdir('.'))
 # URL del file raw su GitHub
 #url = "https://github.com/SilviaFranze/Project7/raw/master/Streamlit/list_id_clients_long.joblib"
 
-client_ids =  joblib.load("Streamlit/list_id_clients_long.joblib")
-explainer = joblib.load("Streamlit/shap_explainer.joblib")
-input_data = joblib.load("Streamlit/data4streamlit.joblib")
+input_data = joblib.load("Streamlit/input_data_str_light.joblib")
+model =  joblib.load("Streamlit/lightgbmodelsh.joblib")
+# explainer = joblib.load("Streamlit/shap_explainer.joblib")
 
 
 st.title("Scoring prediction")
