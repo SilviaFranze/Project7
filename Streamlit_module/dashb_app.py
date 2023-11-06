@@ -44,7 +44,6 @@ if st.button('Predict'):
 
 st.title("Global importance of features")
 
-shap.initjs()  # JavaScript plots
 
 
 explainer = shap.TreeExplainer(lightgbmodel, model_output='raw')
