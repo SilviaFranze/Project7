@@ -20,6 +20,8 @@ input_data = joblib.load("Streamlit/input_data_str_light.joblib")
 model =  joblib.load("Streamlit/lightgbmodelsh.joblib")
 # explainer = joblib.load("Streamlit/shap_explainer.joblib")
 
+# add the line to generate the explainer
+# add the line that insulates the client ids to make the liste deroulante
 
 st.title("Scoring prediction")
 st.write('Select the customer\'s ID to make a prediction on their loan request.')
