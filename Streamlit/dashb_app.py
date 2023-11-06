@@ -6,7 +6,7 @@ import pandas as pd
 import shap
 import joblib
 import io
-
+import lightgbm
 import os
 st.write("CIAoooooooooooo, Current directory:", os.getcwd())
 st.write("Files in current directory:", os.listdir('.'))
