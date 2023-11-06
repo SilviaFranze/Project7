@@ -14,7 +14,7 @@ os.environ["NUMEXPR_NUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
 
 #Load customer data
-input_data_scaled = joblib.load("/home/silviafranze/input_data_scaled_ok.joblib")   
+input_data_scaled = joblib.load("/home/silviafranze/input_data_pa_light.joblib")
 # Load the LightGBM model
 lgbm_classif = joblib.load("/home/silviafranze/lightgbmodel.joblib")
 
