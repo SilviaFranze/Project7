@@ -7,6 +7,9 @@ import lightgbm
 import shap
 from streamlit_shap import st_shap
 
+import os
+st.write("CIAoooooooooooo, Current directory:", os.getcwd())
+st.write("Files in current directory:", os.listdir('.'))
 
 input_data = joblib.load("Streamlit/input_data_str_light.joblib")
 lightgbmodel =  joblib.load("Streamlit/lightgbmodelsh.joblib")
