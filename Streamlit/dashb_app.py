@@ -32,7 +32,7 @@ api_url = "https://silviafranze.pythonanywhere.com/prediction"
 
 # Client id selection through a list
 st.subheader("Client selection:")
-selected_client_id = str(st.selectbox("Select client ID", client_ids))
+####   selected_client_id = str(st.selectbox("Select client ID", client_ids))
 
 # button to make the choice from the list of client ids to make the  GET request to the API
 if st.button('Predict'):
