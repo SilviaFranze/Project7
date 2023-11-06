@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import joblib
-import shap_functions as shap_f
+from Streamlit_module import shap_functions as shap_f
 import lightgbm
 import shap
 from streamlit_shap import st_shap
