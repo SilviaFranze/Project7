@@ -1,5 +1,6 @@
 import shap
 from streamlit_shap import st_shap
+import streamlit as st 
 
 def generate_force_plot(client_id, data, model_explainer):
     """
@@ -18,7 +19,10 @@ def generate_force_plot(client_id, data, model_explainer):
     client_data = data[data['SK_ID_CURR'] == client_id].drop('SK_ID_CURR', axis=1)
     
     # Calcola i valori SHAP per il cliente specifico
-    client_shap_values = model_explainer.shap_values(client_data)
+    if client_data.empty or client_data.ndim != 2:
+        st.error(f"Client data is empty or not 2D! Shape: {client_data.shape}")
+    else:
+        client_shap_values = model_explainer.shap_values(client_data)
     
     # Ottiene il valore atteso dal model_explainer
     base_value = model_explainer.expected_value
