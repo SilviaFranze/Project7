@@ -47,7 +47,7 @@ shap.summary_plot(shap_values, input_data.drop('SK_ID_CURR', axis=1))
 
 st.title("Importance by customer")
 
-shap_f.generate_force_plot(selected_client_id, input_data.drop('SK_ID_CURR', axis=1), explainer)
+shap_f.generate_force_plot(selected_client_id, input_data, explainer)
 
 shap_f.generate_waterfall_plot(selected_client_id, input_data, explainer)
 
