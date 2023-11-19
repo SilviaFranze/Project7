@@ -3,7 +3,7 @@ import requests
 BASE_URL = "http://silviafranze.pythonanywhere.com"
 
 def test_valid_client_id():
-    client_id = 126503  # Example valid client ID that exists in your dataset
+    client_id = 105548  # Example valid client ID that exists in your dataset
     response = requests.get(f"{BASE_URL}/prediction/{client_id}")
     
     
