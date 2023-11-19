@@ -8,7 +8,7 @@ import shap
 from streamlit_shap import st_shap
 
 
-input_data = joblib.load("Streamlit_module/input_data_str_light.joblib")
+input_data = joblib.load("Streamlit_module/data4streamlit_light.joblib")
 lightgbmodel =  joblib.load("Streamlit_module/lightgbmodelsh.joblib")
 client_ids = input_data.SK_ID_CURR.tolist()
 
