@@ -1,6 +1,10 @@
-import shap
+#import shap
 from streamlit_shap import st_shap
+import joblib
 import streamlit as st 
+
+lightgbmodel =  joblib.load("Streamlit_module/lightgbmodelsh.joblib")
+explainer = st_shap.TreeExplainer(lightgbmodel, model_output='raw')
 
 def generate_force_plot(client_id, data, model_explainer):
     """
@@ -16,8 +20,8 @@ def generate_force_plot(client_id, data, model_explainer):
     """
     
     # Seleziona i dati del cliente specificato dall'ID
-    client_data = data[data['SK_ID_CURR'] == client_id].drop('SK_ID_CURR', axis=1)
-    
+    client_data = data.loc[[client_id]].drop('SK_ID_CURR', axis=1)
+
     # Calcola i valori SHAP per il cliente specifico
     if client_data.empty or client_data.ndim != 2:
         st.error(f"Client data is empty or not 2D! Shape: {client_data.shape}")
@@ -28,7 +32,7 @@ def generate_force_plot(client_id, data, model_explainer):
     base_value = model_explainer.expected_value
 
     # Genera e restituisce il force plot
-    return shap.force_plot(base_value[0], client_shap_values[0], client_data)
+    return st_shap.force_plot(base_value[0], client_shap_values[0], client_data)
 
 
 
@@ -45,7 +49,7 @@ def generate_waterfall_plot(client_id, data, explainer):
     - Un waterfall plot per l'ID cliente specificato
     """
     # Seleziona i dati per il cliente specifico
-    example_instance = data[data['SK_ID_CURR'] == client_id].drop('SK_ID_CURR', axis=1)
+    example_instance = data.loc[[client_id]].drop('SK_ID_CURR', axis=1)
     
     # Calcola i valori SHAP per l'istanza specifica
     shap_values = explainer.shap_values(example_instance)
@@ -57,7 +61,7 @@ def generate_waterfall_plot(client_id, data, explainer):
     print("SHAP Waterfall Plot per il Cliente ID:", client_id)
     
     # Crea e mostra il Waterfall Plot
-    shap.plots.waterfall(shap.Explanation(values=shap_values[0][0], 
+    st_shap.plots.waterfall(st_shap.Explanation(values=shap_values[0][0], 
                                           base_values=expected_value, 
                                           data=example_instance.values[0], 
                                           feature_names=example_instance.columns.tolist()))

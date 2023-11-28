@@ -33,14 +33,14 @@ if st.button('Predict'):
 
     # Retrieves the decision from the API respnse 
     decision = response.json()['Decision']
-
+    
     # writes the final decision
     st.write('The decision for the client num', selected_client_id, 'is', decision)
 
 
 st.title("Global importance of features")
 
-explainer = shap.TreeExplainer(lightgbmodel, model_output='raw')
+explainer = st_shap.TreeExplainer(lightgbmodel, model_output='raw')
 
 shap_values = explainer.shap_values(input_data.drop('SK_ID_CURR', axis=1))
 shap.summary_plot(shap_values, input_data.drop('SK_ID_CURR', axis=1))
@@ -50,5 +50,7 @@ st.title("Importance by customer")
 shap_f.generate_force_plot(selected_client_id, input_data, explainer)
 
 shap_f.generate_waterfall_plot(selected_client_id, input_data, explainer)
+
+
 
     # streamlit run .\Streamlit\dashb_app.py
