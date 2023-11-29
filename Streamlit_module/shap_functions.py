@@ -1,10 +1,13 @@
 #import shap
-from streamlit_shap import st_shap
+# from streamlit_shap import st_shap
+import shap
 import joblib
 import streamlit as st 
+import pandas as pd
+import matplotlib.pyplot as plt
 
 lightgbmodel =  joblib.load("Streamlit_module/lightgbmodelsh.joblib")
-explainer = st_shap.TreeExplainer(lightgbmodel, model_output='raw')
+explainer = shap.TreeExplainer(lightgbmodel)
 
 def generate_force_plot(client_id, data, model_explainer):
     """
@@ -16,24 +19,23 @@ def generate_force_plot(client_id, data, model_explainer):
     - model_explainer: Oggetto SHAP TreeExplainer già addestrato
     
     Restituisce:
-    - Un force plot per l'ID cliente specificato
+    - Un force plot per l'ID cliente specificato  
     """
-    
-    # Seleziona i dati del cliente specificato dall'ID
-    client_data = data.loc[[client_id]].drop('SK_ID_CURR', axis=1)
+    client_id = int(client_id)
+    client_data = data.loc[[client_id]].drop('SK_ID_CURR', axis=1, errors='ignore')
 
     # Calcola i valori SHAP per il cliente specifico
-    if client_data.empty or client_data.ndim != 2:
-        st.error(f"Client data is empty or not 2D! Shape: {client_data.shape}")
-    else:
-        client_shap_values = model_explainer.shap_values(client_data)
+    client_shap_values = model_explainer.shap_values(client_data)
     
     # Ottiene il valore atteso dal model_explainer
     base_value = model_explainer.expected_value
 
-    # Genera e restituisce il force plot
-    return st_shap.force_plot(base_value[0], client_shap_values[0], client_data)
+    # Genera il force plot
+    shap.initjs()  # Necessario per SHAP plots interattivi
+    shap.force_plot(base_value[0], client_shap_values[0], client_data, matplotlib=True, show=False)
 
+    # Mostra il plot in Streamlit
+    st.pyplot(plt)
 
 
 def generate_waterfall_plot(client_id, data, explainer):
@@ -48,20 +50,20 @@ def generate_waterfall_plot(client_id, data, explainer):
     Restituisce:
     - Un waterfall plot per l'ID cliente specificato
     """
-    # Seleziona i dati per il cliente specifico
-    example_instance = data.loc[[client_id]].drop('SK_ID_CURR', axis=1)
-    
+    client_id = int(client_id)
+    client_data = data.loc[[client_id]].drop('SK_ID_CURR', axis=1)
+
     # Calcola i valori SHAP per l'istanza specifica
-    shap_values = explainer.shap_values(example_instance)
-    
+    shap_values = explainer.shap_values(client_data)
+
     # Calcola il valore base del modello
-    expected_value = explainer.expected_value[0]  # Stiamo lavorando con la classe negativa
-    
-    # Visualizza l'ID del Cliente
-    print("SHAP Waterfall Plot per il Cliente ID:", client_id)
+    expected_value = explainer.expected_value[0]
     
     # Crea e mostra il Waterfall Plot
-    st_shap.plots.waterfall(st_shap.Explanation(values=shap_values[0][0], 
-                                          base_values=expected_value, 
-                                          data=example_instance.values[0], 
-                                          feature_names=example_instance.columns.tolist()))
+    shap.waterfall_plot(shap.Explanation(values=shap_values[0][0], 
+                                         base_values=expected_value, 
+                                         data=client_data.values[0], 
+                                         feature_names=client_data.columns.tolist()), show=False)
+
+    # Mostra il plot in Streamlit
+    st.pyplot(plt)

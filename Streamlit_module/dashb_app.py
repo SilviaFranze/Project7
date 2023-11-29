@@ -4,14 +4,17 @@ import pandas as pd
 import joblib
 import shap_functions as shap_f
 import lightgbm
+import matplotlib.pyplot as plt
 import shap
 from streamlit_shap import st_shap
 
 
 input_data = joblib.load("Streamlit_module/data4streamlit_light.joblib")
+#input_data = joblib.load("Streamlit_module/sample_ten_rows.joblib")
 lightgbmodel =  joblib.load("Streamlit_module/lightgbmodelsh.joblib")
-client_ids = input_data.SK_ID_CURR.tolist()
-
+client_ids = input_data.index.tolist()
+feature_means = joblib.load("Streamlit_module/feature_means.joblib")
+list_features = feature_means.index.tolist()
 # add the line to generate the explainer
 # add the line that insulates the client ids to make the liste deroulante
 
@@ -33,17 +36,31 @@ if st.button('Predict'):
 
     # Retrieves the decision from the API respnse 
     decision = response.json()['Decision']
-    
+
     # writes the final decision
     st.write('The decision for the client num', selected_client_id, 'is', decision)
 
 
+st.title("Select a feature from the list, see the means of bad and good clients")
+selected_feature = str(st.selectbox("Select feature", list_features))
+if st.button('print mean'):
+    st.write(feature_means.loc[selected_feature])
+
+
 st.title("Global importance of features")
 
-explainer = st_shap.TreeExplainer(lightgbmodel, model_output='raw')
+explainer = shap.TreeExplainer(lightgbmodel)
 
 shap_values = explainer.shap_values(input_data.drop('SK_ID_CURR', axis=1))
-shap.summary_plot(shap_values, input_data.drop('SK_ID_CURR', axis=1))
+# Creazione di una figura in Matplotlib
+plt.figure(figsize=(10, 5))  # Puoi regolare le dimensioni a seconda delle tue esigenze
+
+# Generazione del summary plot
+shap.summary_plot(shap_values, input_data.drop('SK_ID_CURR', axis=1), show=False)
+
+# Visualizzazione del plot in Streamlit
+st.pyplot(plt)
+# shap.summary_plot(shap_values, input_data.drop('SK_ID_CURR', axis=1))
 
 st.title("Importance by customer")
 
