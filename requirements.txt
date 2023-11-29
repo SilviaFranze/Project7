@@ -7,3 +7,4 @@ matplotlib
 streamlit-shap
 shap
 joblib==1.2.0
+ipython
