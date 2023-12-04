@@ -5,7 +5,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
+import io
+from PIL import Image
 
 def generate_force_plot(client_id, data, model_explainer):
     """
@@ -39,7 +40,6 @@ def generate_force_plot(client_id, data, model_explainer):
     st.pyplot(plt)
 
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
@@ -64,7 +64,16 @@ def generate_waterfall_plot(client_id, data, explainer):
     fig, ax = plt.subplots()
 
     # Disegna le barre
-    ax.bar(range(len(shap_singolo_top)), shap_singolo_top, align='center', color=np.where(shap_singolo_top >= 0, 'C0', 'C3'))
+    bars = ax.bar(range(len(shap_singolo_top)), shap_singolo_top, align='center', color=np.where(shap_singolo_top >= 0, 'C0', 'C3'))
+
+    # Aggiungi i valori SHAP come testo sopra le barre
+    for bar in bars:
+        height = bar.get_height()
+        ax.annotate(f'{height:.2f}',
+                    xy=(bar.get_x() + bar.get_width() / 2, height),
+                    xytext=(0, 3 if height > 0 else -12),  # spostamento leggero verso l'alto o verso il basso
+                    textcoords="offset points",
+                    ha='center', va='bottom' if height > 0 else 'top', fontsize=8, color='black')
 
     # Aggiungi linee orizzontali per collegare le barre
     for i in range(1, len(shap_singolo_top)):
@@ -80,8 +89,6 @@ def generate_waterfall_plot(client_id, data, explainer):
 
     # Visualizza il plot in Streamlit
     st.pyplot(fig)
-
-
 
 
 
