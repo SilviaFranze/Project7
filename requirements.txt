@@ -5,6 +5,6 @@ requests
 pydrive
 matplotlib
 streamlit-shap
-shap
+shap==0.43.0
 joblib==1.2.0
 ipython
