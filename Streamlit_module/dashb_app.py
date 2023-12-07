@@ -3,10 +3,10 @@ import requests
 import pandas as pd
 import joblib
 import shap_functions as shap_f
-import lightgbm
 import matplotlib.pyplot as plt
 import shap
 from streamlit_shap import st_shap
+import numpy as np
 
 
 input_data = joblib.load("Streamlit_module/data4streamlit_light.joblib")
@@ -41,10 +41,35 @@ if st.button('Predict'):
     # writes the final decision
     st.write('The decision for the client num', selected_client_id, 'is', decision)
 
+def create_histogram(client_id, data, feature, data_mean_features):
+    client_id = int(client_id)
+    client_row = data.loc[[client_id]].drop('SK_ID_CURR', axis=1, errors='ignore')
+    client_value = client_row[feature].values[0]
+    # Crea l'istogramma
+    fig, ax = plt.subplots()
+    categories = ['Client Value', 'Good Clients Mean', 'Bad Clients Mean']
+    values = [client_value, data_mean_features['Good Clients'].values[0], data_mean_features['Bad Clients'].values[0]]
+    colors = ['skyblue', 'green', 'red']
 
-st.title("Select a feature from the list, see the means of bad and good clients")
+    fig, ax = plt.subplots()
+    ax.bar(np.arange(len(values)), values, color=colors)  # Sostituisci i colori come desideri
+
+
+    ax.bar(categories, values, color=colors)
+    ax.set_title(f'Feature: {selected_feature}')
+    ax.set_ylabel('Value')
+    ax.set_ylim([min(values) - abs(min(values)) * 0.1, max(values) + abs(max(values)) * 0.1])  # Aggiunge spazio sopra e sotto le barre
+    for i, v in enumerate(values):
+            ax.text(i, v + (max(values) - min(values)) * 0.05, f'{v:.2f}', color=colors[i], ha='center')
+
+    # Mostra il grafico
+    st.pyplot(fig)
+
+
+st.title("Select a feature from the list, compare the selected client with bad and good clients means")
 selected_feature = str(st.selectbox("Select feature", list_features))
-if st.button('print mean'):
+if st.button('choose feature'):
+    create_histogram(client_id=selected_client_id, data=input_data, feature=selected_feature, data_mean_features= feature_means)
     st.write(feature_means.loc[selected_feature])
 
 
@@ -72,3 +97,5 @@ shap_f.generate_waterfall_plot(selected_client_id, input_data, explainer)
 
 
     # streamlit run .\Streamlit\dashb_app.py
+
+
