@@ -95,6 +95,112 @@ def generate_waterfall_plot(client_id, data, explainer):
 
 
 
+def create_histogram(client_id, data, feature, data_mean_features):
+    client_id = int(client_id)
+    client_row = data.loc[[client_id]].drop('SK_ID_CURR', axis=1, errors='ignore')
+    client_value = client_row[feature].values[0]
+    selected_row = data_mean_features.loc[feature]
+    # Valori medi per buoni e cattivi clienti
+    good_mean = selected_row['Good Clients']
+    bad_mean = selected_row['Bad Clients']
+
+    # Crea l'istogramma
+    fig, ax = plt.subplots()
+    categories = ['Client Value', 'Good Clients Mean', 'Bad Clients Mean']
+    values = [client_value, good_mean, bad_mean]
+    
+    print('good means and bad meaaaaaaaaaaaaaaaaaaaaaaaans')
+    print(good_mean, bad_mean)
+
+    colors = ['skyblue', 'green', 'red']
+
+    ax.bar(np.arange(len(values)), values, color=colors)  # Utilizzo di np.arange per posizionare le barre
+
+    ax.set_title(f'Feature: {feature}')
+    ax.set_ylabel('Value')
+
+    # Imposta le etichette dell'asse x
+    ax.set_xticks(np.arange(len(values)))
+    ax.set_xticklabels(categories)
+
+    # Imposta i limiti dell'asse y
+    ax.set_ylim([0, max(values) + max(values) * 0.1])  # Spazio sopra la barra più alta
+
+    # Aggiunge i valori sopra le barre
+    for i, v in enumerate(values):
+        ax.text(i, v + max(values) * 0.05, f'{v:.2f}', color='black', ha='center')
+
+    # Mostra il grafico
+    st.pyplot(fig)
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+
+def create_histogram(client_id, data, feature, data_mean_features):
+    client_id = int(client_id)
+    client_row = data.loc[[client_id]].drop('SK_ID_CURR', axis=1, errors='ignore')
+    client_value = client_row[feature].values[0]
+    # Crea l'istogramma
+    fig, ax = plt.subplots()
+    categories = ['Client Value', 'Good Clients Mean', 'Bad Clients Mean']
+    values = [client_value, data_mean_features['Good Clients'].values[0], data_mean_features['Bad Clients'].values[0]]
+    colors = ['skyblue', 'green', 'red']
+
+    fig, ax = plt.subplots()
+    ax.bar(np.arange(len(values)), values, color=colors)  # Sostituisci i colori come desideri
+
+
+    ax.bar(categories, values, color=colors)
+    ax.set_title(f'Feature: {feature}')
+    ax.set_ylabel('Value')
+    ax.set_ylim([min(values) - abs(min(values)) * 0.1, max(values) + abs(max(values)) * 0.1])  # Aggiunge spazio sopra e sotto le barre
+    for i, v in enumerate(values):
+            ax.text(i, v + (max(values) - min(values)) * 0.05, f'{v:.2f}', color=colors[i], ha='center')
+
+    # Mostra il grafico
+    st.pyplot(fig)
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''
 def generate_waterfall_plot(client_id, data, explainer):
     """
