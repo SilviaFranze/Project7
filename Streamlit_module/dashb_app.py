@@ -17,7 +17,7 @@ feature_means_all = joblib.load("Streamlit_module/feature_means_all.joblib")
 data4histo = joblib.load("Streamlit_module/data4histogram.joblib")
 client_ids = data4histo.index.tolist()  # input_data.index.tolist()
 list_features = feature_means_all.index.tolist()
-explainer = joblib.load("Streamlit_module/local_explainer.joblib")
+# explainer = joblib.load("Streamlit_module/local_explainer.joblib")
 
 # add the line to generate the explainer
 # add the line that insulates the client ids to make the liste deroulante
@@ -51,7 +51,7 @@ if st.button('Predict'):
 
 st.title("Global importance of features")
 
-# explainer = shap.TreeExplainer(lightgbmodel)
+explainer = shap.TreeExplainer(lightgbmodel)
 
 shap_values = explainer.shap_values(input_data.drop('SK_ID_CURR', axis=1))
 # Creazione di una figura in Matplotlib
